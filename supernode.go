@@ -22,9 +22,7 @@ func main() {
 	var err error
 	var part []byte
 	var address net.UDPAddr
-	var token int
 
-	token=99
 	if file, err = os.Open("hops.log"); err != nil {
 		return
 	}
@@ -71,8 +69,6 @@ func main() {
 				infoHash = string(shalist[i])
 				l4g.Info("querying for infoHash: %x", infoHash)
 				go dht.PeersRequest(infoHash, sendAnnouncements)
-				<-quickTick
-				go dht.announcePeer(address,infoHash,token)
 				<-quickTick
 			}
 		}
