@@ -60,7 +60,7 @@ func main() {
 	for {
 		select {
 		case <-queryTick:
-			d.PeersRequest("\xd1\xc5\x67\x6a\xe7\xac\x98\xe8\xb1\x9f\x63\x56\x59\x05\x10\x5e\x3c\x4c\x37\xa2", true)
+			dht.PeersRequest("\xd1\xc5\x67\x6a\xe7\xac\x98\xe8\xb1\x9f\x63\x56\x59\x05\x10\x5e\x3c\x4c\x37\xa2", true)
 			fmt.Printf("TICK\n");
 			for i := 0; i < num; i++ {
 //				fmt.Printf("querying for infoHash: %x\n", shalist[i])
