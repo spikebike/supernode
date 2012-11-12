@@ -21,6 +21,8 @@ func main() {
 	var err error
 	var part []byte
 
+	l4g.AddFilter("stdout", l4g.INFO, l4g.NewConsoleLogWriter())
+
 	if file, err = os.Open("hops.log"); err != nil {
 		return
 	}
@@ -36,11 +38,7 @@ func main() {
 		hasher := sha1.New()
 		hasher.Write(part)
 		shalist[num] = string(hasher.Sum(nil))
-		//		fmt.Printf("%s %x\n", part, shalist[num])
 		num = num + 1
-	}
-	for i := 0; i < num; i++ {
-		fmt.Printf("%d %x\n", i, shalist[i])
 	}
 
 	sendAnnouncements = true
@@ -65,7 +63,8 @@ func main() {
 		case <-queryTick:
 			fmt.Printf("TICK\n");
 			for i := 0; i < num; i++ {
-				fmt.Printf("querying for infoHash: %x\n", shalist[i])
+//				fmt.Printf("querying for infoHash: %x\n", shalist[i])
+				l4g.Info("querying for infoHash: %x", shalist[i])
 				go dht.PeersRequest(shalist[i], sendAnnouncements)
 				<-quickTick
 			}
