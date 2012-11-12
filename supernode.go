@@ -21,7 +21,6 @@ func main() {
 	var shalist [64]string
 	var err error
 	var part []byte
-	var address net.UDPAddr
 
 	if file, err = os.Open("hops.log"); err != nil {
 		return
@@ -47,8 +46,6 @@ func main() {
 	numTargetPeers = 64
 
 	port := 42345
-	address.IP=net.IPv4(67,166,144,45)
-	address.Port=port
 	l4g.Error("used port %d", port)
 	dht, err := dht.NewDHTNode(port, numTargetPeers, true)
 	if err != nil {
