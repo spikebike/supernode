@@ -63,6 +63,7 @@ func main() {
 	for {
 		select {
 		case <-queryTick:
+			fmt.Printf("TICK\n");
 			for i := 0; i < num; i++ {
 				fmt.Printf("querying for infoHash: %x\n", shalist[i])
 				go dht.PeersRequest(shalist[i], sendAnnouncements)
