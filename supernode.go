@@ -54,8 +54,8 @@ func main() {
 	go dht.DoDHT()
 	go drainresults(dht)
 
-	queryTick := time.Tick(10 * time.Second)
-	quickTick := time.Tick(1 * time.Second)
+	queryTick := time.Tick(100 * time.Second)
+	quickTick := time.Tick(10 * time.Second)
 
 	for {
 		select {
