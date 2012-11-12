@@ -72,14 +72,6 @@ func main() {
 	}
 }
 
-func nodeId() []byte {
-	b := make([]byte, 20)
-	if _, err := rand.Read(b); err != nil {
-		l4g.Exitf("nodeId rand: %v", err)
-	}
-	return b
-}
-
 // drainresults loops, constantly reading any new peer information sent by the
 // DHT node and just ignoring them. We don't care about those :-P.
 func drainresults(n *dht.DHT) {
