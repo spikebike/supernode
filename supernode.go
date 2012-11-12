@@ -66,7 +66,7 @@ func main() {
 //				fmt.Printf("querying for infoHash: %x\n", shalist[i])
 				l4g.Info("querying for infoHash: %x", shalist[i])
 				go dht.PeersRequest(shalist[i], sendAnnouncements)
-				_ <-quickTick
+				<- quickTick
 			}
 		}
 	}
