@@ -55,7 +55,6 @@ func main() {
 	go drainresults(dht)
 
 	queryTick := time.Tick(100 * time.Second)
-	quickTick := time.Tick(10 * time.Second)
 
 	for {
 		select {
