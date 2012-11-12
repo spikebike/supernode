@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	l4g "code.google.com/p/log4go"
-	"crypto/rand"
 	"crypto/sha1"
 	"fmt"
 	"github.com/nictuku/dht"
