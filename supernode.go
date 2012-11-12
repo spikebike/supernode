@@ -10,7 +10,6 @@ import (
 	"io"
 	"os"
 	"time"
-	"net"
 )
 
 func main() {
@@ -37,12 +36,14 @@ func main() {
 		hasher := sha1.New()
 		hasher.Write(part)
 		shalist[num] = string(hasher.Sum(nil))
-		fmt.Printf("%s %x\n", part, shalist[num])
+		//		fmt.Printf("%s %x\n", part, shalist[num])
 		num = num + 1
+	}
+	for i := 0; i < num; i++ {
+		fmt.Printf("%d %x\n", i, shalist[i])
 	}
 
 	sendAnnouncements = true
-	infoHash := string(nodeId())
 	numTargetPeers = 64
 
 	port := 42345
@@ -63,9 +64,8 @@ func main() {
 		select {
 		case <-queryTick:
 			for i := 0; i < num; i++ {
-				infoHash = string(shalist[i])
-				l4g.Info("querying for infoHash: %x", infoHash)
-				go dht.PeersRequest(infoHash, sendAnnouncements)
+				fmt.Printf("querying for infoHash: %x\n", shalist[i])
+				go dht.PeersRequest(shalist[i], sendAnnouncements)
 				<-quickTick
 			}
 		}
