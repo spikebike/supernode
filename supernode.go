@@ -82,7 +82,6 @@ func drainresults(n *dht.DHT) {
 				for _, peer := range peers {
 					fmt.Println(dht.DecodePeerAddress(peer))
 				}
-				return
 			}
 		}
 	}
