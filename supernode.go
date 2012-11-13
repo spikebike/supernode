@@ -86,5 +86,5 @@ func drainresults(n *dht.DHT) {
 			}
 		}
 	}
-
+	l4g.Info("finishing drainresults")
 }
