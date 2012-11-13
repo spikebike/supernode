@@ -59,13 +59,14 @@ func main() {
 	for {
 		select {
 		case <-queryTick:
+			// trying the manual method from dht_test in case I have the format 
+			// wrong
 			dht.PeersRequest("\xd1\xc5\x67\x6a\xe7\xac\x98\xe8\xb1\x9f\x63\x56\x59\x05\x10\x5e\x3c\x4c\x37\xa2", true)
-			fmt.Printf("TICK\n");
+			fmt.Printf("TICK\n")
 			for i := 0; i < num; i++ {
-//				fmt.Printf("querying for infoHash: %x\n", shalist[i])
 				l4g.Info("querying for infoHash: %x", shalist[i])
 				go dht.PeersRequest(shalist[i], sendAnnouncements)
-				time.Sleep(10000*time.Millisecond)
+				time.Sleep(10000 * time.Millisecond)
 			}
 		}
 	}
@@ -74,14 +75,15 @@ func main() {
 // drainresults loops, constantly reading any new peer information sent by the
 // DHT node and just ignoring them. We don't care about those :-P.
 func drainresults(n *dht.DHT) {
-	infoHashPeers := <-n.PeersRequestResults
-	for ih, peers := range infoHashPeers {
-		if len(peers) > 0 {
-			fmt.Printf("peer found for infohash [%x]\n", ih)
-			for _, peer := range peers {
-				fmt.Println(dht.DecodePeerAddress(peer))
+	for infoHashPeers := range n.PeersRequestResults {
+		for ih, peers := range infoHashPeers {
+			if len(peers) > 0 {
+				fmt.Printf("peer found for infohash [%x]\n", ih)
+				for _, peer := range peers {
+					fmt.Println(dht.DecodePeerAddress(peer))
+				}
+				return
 			}
-			return
 		}
 	}
 
