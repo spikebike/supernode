@@ -78,7 +78,7 @@ func drainresults(n *dht.DHT) {
 	for infoHashPeers := range n.PeersRequestResults {
 		for ih, peers := range infoHashPeers {
 			if len(peers) > 0 {
-				fmt.Printf("peer found for infohash [%x]\n", ih)
+				fmt.Printf("peer found for infohash [%x] ", ih)
 				for _, peer := range peers {
 					fmt.Println(dht.DecodePeerAddress(peer))
 				}
