@@ -80,10 +80,13 @@ func main() {
 // drainresults loops, constantly reading any new peer information sent by the
 // DHT node and just ignoring them. We don't care about those :-P.
 func drainresults(n *dht.DHT) {
-		for ih, peers := range <-n.PeersRequestResults {
+	for _ = range <-n.PeersRequestResults {
+	}
+
+/*		for ih, peers := range <-n.PeersRequestResults {
 			for _, peer := range peers {
 				fmt.Printf("********** peer FOUND for infohash [%x] %s\n", ih, dht.DecodePeerAddress(peer))
 			} 
-	}
+	} */
 	l4g.Info("finishing drainresults")
 }
