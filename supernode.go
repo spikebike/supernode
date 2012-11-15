@@ -7,15 +7,14 @@ import (
 	"fmt"
 	"github.com/nictuku/dht"
 	"io"
+	"net/http"
 	"os"
 	"time"
-	"net/http"
 )
 
 const (
-		    httpPort = 8080
-	)
-
+	httpPort = 8080
+)
 
 func main() {
 	var numTargetPeers int
@@ -60,7 +59,7 @@ func main() {
 	go dht.DoDHT()
 	go drainresults(dht)
 
-	queryTick := time.Tick(50 * time.Second)
+	queryTick := time.Tick(20 * time.Second)
 
 	go http.ListenAndServe(fmt.Sprintf(":%d", httpPort), nil)
 	for {
@@ -81,13 +80,10 @@ func main() {
 // drainresults loops, constantly reading any new peer information sent by the
 // DHT node and just ignoring them. We don't care about those :-P.
 func drainresults(n *dht.DHT) {
-	for {
-		infoHashPeers := <- n.PeersRequestResults 
-		for ih, peers := range infoHashPeers {
+		for ih, peers := range <-n.PeersRequestResults {
 			for _, peer := range peers {
-				fmt.Printf("peer found for infohash [%x] %s\n", ih, dht.DecodePeerAddress(peer))
+				fmt.Printf("********** peer FOUND for infohash [%x] %s\n", ih, dht.DecodePeerAddress(peer))
 			} 
-		}
 	}
 	l4g.Info("finishing drainresults")
 }
