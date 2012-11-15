@@ -50,7 +50,7 @@ func main() {
 
 	port := 42345
 	l4g.Error("used port %d", port)
-	dht, err := dht.NewDHTNode(port, numTargetPeers, true)
+	dht, err := dht.NewDHTNode(port, numTargetPeers, false)
 	if err != nil {
 		l4g.Error("DHT node creation error", err)
 		return
@@ -70,7 +70,7 @@ func main() {
 			fmt.Printf("TICK\n")
 			for i := 0; i < num; i++ {
 				l4g.Info("querying for infoHash: %x", shalist[i])
-				go dht.PeersRequest(shalist[i], sendAnnouncements)
+				dht.PeersRequest(shalist[i], sendAnnouncements)
 				time.Sleep(10 * time.Second)
 			}
 		}
@@ -80,7 +80,8 @@ func main() {
 // drainresults loops, constantly reading any new peer information sent by the
 // DHT node and just ignoring them. We don't care about those :-P.
 func drainresults(n *dht.DHT) {
-	for _ = range <-n.PeersRequestResults {
+	for {
+			<- n.PeersRequestResults
 	}
 
 /*		for ih, peers := range <-n.PeersRequestResults {
