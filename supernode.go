@@ -9,7 +9,13 @@ import (
 	"io"
 	"os"
 	"time"
+	"net/http"
 )
+
+const (
+		    httpPort = 8080
+	)
+
 
 func main() {
 	var numTargetPeers int
@@ -20,7 +26,7 @@ func main() {
 	var err error
 	var part []byte
 
-	l4g.AddFilter("stdout", l4g.INFO, l4g.NewConsoleLogWriter())
+	l4g.AddFilter("stdout", l4g.DEBUG, l4g.NewConsoleLogWriter())
 
 	if file, err = os.Open("hops.log"); err != nil {
 		return
@@ -56,6 +62,7 @@ func main() {
 
 	queryTick := time.Tick(50 * time.Second)
 
+	go http.ListenAndServe(fmt.Sprintf(":%d", httpPort), nil)
 	for {
 		select {
 		case <-queryTick:
@@ -74,9 +81,12 @@ func main() {
 // drainresults loops, constantly reading any new peer information sent by the
 // DHT node and just ignoring them. We don't care about those :-P.
 func drainresults(n *dht.DHT) {
-	for ih, peers := range <-n.PeersRequestResults {
-		for _, peer := range peers {
-			fmt.Printf("peer found for infohash [%x] %s\n", ih, dht.DecodePeerAddress(peer))
+	for {
+		infoHashPeers := <- n.PeersRequestResults 
+		for ih, peers := range infoHashPeers {
+			for _, peer := range peers {
+				fmt.Printf("peer found for infohash [%x] %s\n", ih, dht.DecodePeerAddress(peer))
+			} 
 		}
 	}
 	l4g.Info("finishing drainresults")
