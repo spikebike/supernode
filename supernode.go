@@ -65,7 +65,7 @@ func main() {
 			for i := 0; i < num; i++ {
 				l4g.Info("querying for infoHash: %x", shalist[i])
 				go dht.PeersRequest(shalist[i], sendAnnouncements)
-				time.Sleep(10000 * time.Millisecond)
+				time.Sleep(10 * time.Second)
 			}
 		}
 	}
@@ -74,14 +74,9 @@ func main() {
 // drainresults loops, constantly reading any new peer information sent by the
 // DHT node and just ignoring them. We don't care about those :-P.
 func drainresults(n *dht.DHT) {
-	for infoHashPeers := range n.PeersRequestResults {
-		for ih, peers := range infoHashPeers {
-			if len(peers) > 0 {
-				fmt.Printf("peer found for infohash [%x] ", ih)
-				for _, peer := range peers {
-					fmt.Println(dht.DecodePeerAddress(peer))
-				}
-			}
+	for ih, peers := range <-n.PeersRequestResults {
+		for _, peer := range peers {
+			fmt.Printf("peer found for infohash [%x] %s\n", ih, dht.DecodePeerAddress(peer))
 		}
 	}
 	l4g.Info("finishing drainresults")
