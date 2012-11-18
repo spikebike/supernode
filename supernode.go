@@ -90,9 +90,8 @@ func drainresults(n *dht.DHT) {
 	fmt.Println("=========================== DHT")
 	for r := range n.PeersRequestResults {
 		for ih, peers := range r {
-			l4g.Warn("Found peer(s) for infohash %x:", ih)
 			for _, x := range peers {
-				l4g.Warn("==========================> %v", dht.DecodePeerAddress(x))
+				l4g.Warn("Found peer for infohash %x at %v", ih,dht.DecodePeerAddress(x))
 			}
 		}
 	}
