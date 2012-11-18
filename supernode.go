@@ -67,7 +67,12 @@ func main() {
 		case <-queryTick:
 			// trying the manual method from dht_test in case I have the format 
 			// wrong
-			fmt.Printf("TICK\n")
+			fmt.Printf("TICK ************************************\n")
+			fmt.Printf("TICK ************************************\n")
+			fmt.Printf("TICK ************************************\n")
+			fmt.Printf("TICK ************************************\n")
+			fmt.Printf("TICK ************************************\n")
+			fmt.Printf("TICK ************************************\n")
 			for i := 0; i < num; i++ {
 				l4g.Info("querying for infoHash: %x", shalist[i])
 				dht.PeersRequest(shalist[i], sendAnnouncements)
