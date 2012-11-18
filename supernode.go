@@ -84,15 +84,16 @@ func main() {
 
 // drainresults loops, constantly reading any new peer information sent by the
 // DHT node and just ignoring them. We don't care about those :-P.
-func drainresults(n *dht.DHT) {
-	for {
-			<- n.PeersRequestResults
-	}
 
-/*		for ih, peers := range <-n.PeersRequestResults {
-			for _, peer := range peers {
-				fmt.Printf("********** peer FOUND for infohash [%x] %s\n", ih, dht.DecodePeerAddress(peer))
-			} 
-	} */
-	l4g.Info("finishing drainresults")
+// drainresults loops, printing the address of nodes it has found.
+func drainresults(n *dht.DHT) {
+	fmt.Println("=========================== DHT")
+	for r := range n.PeersRequestResults {
+		for ih, peers := range r {
+			l4g.Warn("Found peer(s) for infohash %x:", ih)
+			for _, x := range peers {
+				l4g.Warn("==========================> %v", dht.DecodePeerAddress(x))
+			}
+		}
+	}
 }
